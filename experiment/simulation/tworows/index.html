@@ -1,0 +1,641 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>SOLVE</title>
+<link rel="stylesheet" href="css/tworows.css" />
+<script type="text/javascript" src="js/jquerymin.js"></script>
+<script type="text/javascript" src= "js/plotly-latest.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/tworows.js"></script>
+<script>
+var simsubscreennum=0;
+var temp=0;
+var ecc;
+</script>
+<style>
+td
+{
+width:60px;
+}
+<!-- /* For toggling effect */ -->
+.onClickTextOverImage
+{
+  width:100px;
+  height:100px;
+  background-repeat:no-repeat;
+  cursor:pointer;
+  position:relative;
+}
+.onClickTextOverImage div
+{
+	text-align:center;
+	color:#fff;
+	padding:5px 5px 5px 5px;
+	background-color:rgba(0,0,0,1);
+	border-radius:6px;
+	padding-top:5%;
+
+}
+
+.onClickTextOverImage div.show
+{
+	opacity:1;
+}
+<!-- tooltip styles -->
+.popup
+{
+	border-radius:5px;
+	background-color:black;
+	color:white;
+	padding:5px;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 520px;
+  background-color: black;
+  color: #fff;
+  border-radius: 6px;
+  padding: 10px 10px 10px 10px;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 100;
+  <!-- text-align:center; -->
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+td
+{
+	border:1px solid black;
+	padding:10px;
+	text-align:center;
+}
+td,button
+{
+font-size:14px;
+}
+
+#waves { z-index: 100;}
+
+.wave {
+  position: absolute;
+  bottom: 140px;
+  background: #7ecef4;
+  opacity: 0.40;
+  display: inline-block;
+  height: 19px;
+  width: 4px;
+  position: absolute;
+  z-index: 0 !important;
+}
+@keyframes dostuff {
+  0% {height: 4%;}
+  10% {height: 6%;}
+  20% {height: 4%;}
+  30% {height: 6%;}
+  40% {height: 4%;}
+  50% {height: 6%;}
+  60% {height: 4%;}
+  70% {height: 6%;}
+  80% {height: 4%;}
+  90% {height: 6%;}
+  100% {height: 4%;}
+}
+
+@keyframes dostuff2 {
+  0% {height: 2.75%;}
+  10% {height: 4.75%;}
+  20% {height: 2.75%;}
+  30% {height: 4.75%;}
+  40% {height: 2.75%;}
+  50% {height: 4.75%;}
+  60% {height: 2.75%;}
+  70% {height: 4.75%;}
+  80% {height: 2.75%;}
+  90% {height: 4.75%;}
+  100% {height: 2.75%;}
+}
+
+@keyframes dostuff3 {
+  0% {height: 2.75%;}
+  10% {height: 8%;}
+  20% {height: 2.75%;}
+  30% {height: 8%;}
+  40% {height: 2.75%;}
+  50% {height: 8%;}
+  60% {height: 2.75%;}
+  70% {height: 8%;}
+  80% {height: 2.75%;}
+  90% {height: 8%;}
+  100% {height: 2.75%;}
+}
+
+input[type=button] {
+    background-color:#C0C0C0;
+    color: black;
+    cursor: pointer;
+}
+
+<!-- For description -->
+.popup
+{
+	border-radius:5px;
+	background-color:black;
+	color:white;
+	padding:5px;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 400px;
+  background-color: black;
+  color: #fff;
+  text-align: left;
+  border-radius: 6px;
+  padding: 10px 10px 10px 10px;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 100;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+</style>
+</head>
+
+<body style="margin:0; font-family:verdana; font-size:14px;">
+<div id="simscreen">
+<div id="title"><h3>Wave attenuation in pile based break water</h3></div>
+
+<div class="simsubscreen" id="canvas0" >
+<h4 class="incanvas">Objective:</h4>
+<p class="incanvas" style="font-size:14px;">To understand the wave attenuation pattern in pile based wave flume.</p><br/>
+<h4 class="incanvas">Apparatus used:</h4>
+<p class="incanvas" style="font-size:14px;">Wave flume, Piles, Inverter, Pump.</p></br>
+<img style="position:absolute; left:347.5px; top:277.5px; height:52.5px;" src="images/piles.png"/>
+<img style="position:absolute; left:0px; top:250px; width:650px;" src="images/flume3.png"/>
+&nbsp;<span class="tooltip" style="border-bottom:1px dotted ; color:red; position:absolute; top:140px; text-align:justify; "><strong>Description</strong>
+<span  class="tooltiptext" style="text-align:-webkit-justify;"><strong style="color:red;">Wave Attenuation</strong> is the change in wave transmission occurring when a wave passes through a permeable or porous medium.</span></span>
+</div>
+
+<div class="simsubscreen" id="canvas1" style="visibility:hidden;">
+<strong class="incanvas">STEP</strong>
+<span class="circlebg">&nbsp;1&nbsp;</span>
+<p class="steptext">&nbsp;Point the mouse on different parts of wave flume to know the names. Then click on next button to start the experiment.</p>
+<img id="1-3" style="position:absolute; left:0px; top:250px; width:650px;" src="images/flume1.png"/>
+
+<div class="onClickTextOverImage">
+<img  id="1" style="position:absolute; left:87px; top:210px; " src="images/flumetank.png"/ />
+<div id="11" style=" position:absolute; left:225px; top:200px; display:none;">Wave flume</div>
+</div>
+
+<div class="onClickTextOverImage">
+<img  id="12" style="position:absolute; left:-12.5px; top:152.5px; " src="images/slope.png" />
+<div id="112" style=" position:absolute; left:0.5px; top:130px; display:none;">Wave absorber slope</div>
+</div>
+
+<div class="onClickTextOverImage">
+<img  id="13" style="position:absolute; left:583px; top:3px; " src="images/flap.png" />
+<div id="113" style=" position:absolute; left:583px; top:-40px; display:none;">Wave generator(flap)</div>
+</div>
+
+<div class="onClickTextOverImage">
+<img  id="14" style="position:absolute; left:432.5px; top:9.5px; " src="images/inverter.png" />
+<div id="114" style=" position:absolute; left:450px; top:-40px; display:none;">11kW inverter</div>
+</div>
+
+<div class="onClickTextOverImage">
+<img  id="15" style="position:absolute; left:574.5px; top:-119px; " src="images/pump.png" />
+<div id="115" style=" position:absolute; left:583px; top:-50px; display:none;">Pump</div>
+</div>
+&nbsp;<span class="tooltip" style="border-bottom:1px dotted ; color:red; position:absolute; top:65px; text-align:justify; "><strong>Wave flume characteristics</strong>
+<span  class="tooltiptext" style="text-align:-webkit-justify;">
+<ul>
+	<li>Wave generator : Bottom hinge flap type</li>
+	<!-- <li>Width : 0.71m</li> -->
+	<li>Motor : Inverter driven (11kW)</li>
+	<li>Total length : 51.0m</li>
+	<li>Depth : 1.5m</li>
+</ul>
+</span></span>
+</div>
+
+<div class="simsubscreen" id="canvas2" style="visibility:hidden;">
+<strong class="incanvas">STEP</strong>
+<span class="circlebg">&nbsp;1&nbsp;</span>
+<p class="steptext">&nbsp;Choose spacing for placing the piles in two rows.</p>
+<input id="r2-1" type="radio" style="position:absolute; left:100px; top:100px;" value="0.75D" name="space"/><label id="L2-1" style="position:absolute; left:120px; top:100px;" >0.75D Spacing</label>
+<img id="img2-1" style="position:absolute; left:120px; top:130px;" title="piles" src="images/0.5Dpiles.png" />
+<input id="r2-2" type="radio" style="position:absolute; left:350px; top:100px;" value="1D" name="space"/><label id="L2-2" style="position:absolute; left:370px; top:100px;" >1D Spacing</label>
+<img id="img2-2" style="position:absolute; left:370px; top:130px;" title="piles" src="images/1Dpiles.png" />
+
+<p id="p2-1" style="position:absolute; left:130px; top:210px; visibility:hidden;">Breadth=1D</p>
+
+<input id="i2-1" type="radio" style="position:absolute; left:350px; top:230px; visibility:hidden;" value="1" name="breadth" /><label id="L2-3" style="position:absolute; left:370px; top:230px; visibility:hidden;" >1D Breadth</label>
+<input id="i2-2" type="radio" style="position:absolute; left:530px; top:230px; visibility:hidden;" value="2" name="breadth" /><label id="L2-4" style="position:absolute; left:550px; top:230px; visibility:hidden;" >2D Breadth</label>
+
+<p id="2-6" style="position:absolute; left:340px; top:80px; visibility:hidden;">Top view of two rows of piles</p>
+<img id="2-4" style="position:absolute; left:400px; top:120px; visibility:hidden;" title="Top view of two rows of piles" src="images/tworowstopview.png"/>
+
+<img id="2-7" style="position:absolute; left:317.5px; top:325px; height:52.5px; visibility:hidden;" src="images/piles.png"/>
+<img id="2-2" style="position:absolute; left:347.5px; top:325px; height:52.5px; visibility:hidden;" src="images/piles.png"/>
+<img id="2-3" style="position:absolute; left:50px; top:305px;  width:650px; visibility:hidden;" src="images/water.png"/>
+<img id="2-1" style="position:absolute; left:0px; top:295px; width:650px; visibility:hidden;" src="images/flume4.png"/>
+<img id="2-5" style="position:absolute; left:280px; top:240px;  transform:rotate(-90deg); width:160px; visibility:hidden;" src="images/freq2.png"/>
+
+</div>
+
+<div class="simsubscreen" id="canvas3" style="visibility:hidden;">
+<strong class="incanvas">STEP</strong>
+<span class="circlebg">&nbsp;2&nbsp;</span>
+<p class="steptext">&nbsp;Select the water depth</p>
+<form id="waterdepth">
+<input type="radio" id="r3-1" style="position:absolute; left:100px; top:100px;" value="0.4m" name="depth"/><label id="L3-1" style="position:absolute; left:120px; top:100px;" >0.4m </label>
+<input type="radio" id="r3-2" style="position:absolute; left:350px; top:100px;" value="0.5m" name="depth"/><label id="L3-2" style="position:absolute; left:370px; top:100px;" >0.5m</label>
+</form>
+<!-- <img id="3-2" style="position:absolute; left:0px; top:265px; width:650px; visibility:hidden;" src="images/water.png"/> -->
+<!-- <img id="2-3" style="position:absolute; left:347.5px; top:277.5px; height:52.5px;" src="images/piles.png"/> -->
+<!-- <img id="3-1" style="position:absolute; left:0px; top:250px; width:650px;" src="images/flume1.png"/> -->
+</div>
+
+<div class="simsubscreen" id="canvas4" style="visibility:hidden;">
+<strong class="incanvas">STEP</strong>
+<span class="circlebg">&nbsp;4&nbsp;</span>
+<p class="steptext">&nbsp;Select frequency and eccentricity by chosing wave period and wave height respectively from flume calibration table.</p>
+<table id="table1" style="position:absolute; top:60px; font-size:14px; visibility:hidden;">
+<tr >
+<td style="border:none"></td>
+<td style="border:none"></td>
+<td colspan="6"><strong>Wave height</strong></td>
+</tr>
+<tr>
+<td style="border:none"></td>
+<td style="border:none"></td>
+<td >6</td>
+<td >8</td>
+<td >10</td>
+<td >12</td>
+<td >14</td>
+<td >16</td>
+</tr>
+<tr>
+<td ><strong>Wave period</strong></td>
+<td ><strong>Frequency</strong></td>
+<td style="border:1px solid black;" colspan="6"><strong>Eccentricity</strong></td>
+</tr>
+<tr>
+<td >2</td>
+<td >9.8</td>
+<td >6.5</td>
+<td >9</td>
+<td >11.2</td>
+<td >14</td>
+<td >16</td>
+<td >18.1</td>
+</tr>
+<tr>
+<td >1.5</td>
+<td >13.48</td>
+<td >5.1</td>
+<td >6.3</td>
+<td >8</td>
+<td >9.5</td>
+<td >11</td>
+<td title="Wave break">WB</td>
+</tr>
+</table>
+
+<table id="table2" style="position:absolute; left:100px; top:60px; font-size:14px; visibility:hidden;">
+<tr >
+<td style="border:none"></td>
+<td style="border:none"></td>
+<td colspan="4"><strong>Wave height</strong></td>
+</tr>
+<tr>
+<td style="border:none"></td>
+<td style="border:none"></td>
+<td >6</td>
+<td >8</td>
+<td >10</td>
+<td >12</td>
+</tr>
+<tr>
+<td ><strong>Wave period</strong></td>
+<td ><strong>Frequency</strong></td>
+<td style="border:1px solid black;" colspan="4"><strong>Eccentricity</strong></td>
+</tr>
+<tr>
+<td >2</td>
+<td >9.8</td>
+<td >5.5</td>
+<td >7.5</td>
+<td >9.7</td>
+<td >11.3</td>
+</tr>
+<tr>
+<td >1.5</td>
+<td >13.48</td>
+<td >5.1</td>
+<td >6.2</td>
+<td >7.8</td>
+<td >8.5</td>
+</tr>
+</table>
+
+<div style="position:absolute; top:315px; ">
+Select wave period : <select id="wp">
+<option value=" "></option>
+<option value="2">2</option>
+<option value="1.5">1.5</option>
+</select>
+</div>
+
+<div id="wht" style="position:absolute; left:350px; top:315px; visibility:hidden;">
+Select wave height: <select id="waveHeight">
+</select>
+</div>
+
+<!-- <div style="position:absolute; top:325px; visibility:hidden;"> -->
+<p id="p4-1" style="position:absolute; top:400px; visibility:hidden;">You have selected wave period = </p>
+<p id="p4-2" style="position:absolute; top:430px; visibility:hidden;">You have selected wave height = </p>
+<!-- </div> -->
+
+<span id="note4-1" style="position:absolute; left:400px; top:350px; text-align:justify; padding:10px; display:none; border:1px solid black; background-color:black; border-radius:5px; width:300px;">
+<p style="color:white; font-size:15px;" >Make a note of the frequency and eccentricity values.</p>
+<input id="b4-1" type="button" style="float:right;" value="OK" />
+</span>
+</div>
+
+<div class="simsubscreen" id="canvas5" style="visibility:hidden;">
+<strong class="incanvas">STEP</strong>
+<span class="circlebg">&nbsp;5&nbsp;</span>
+<p class="steptext">&nbsp;Set the frequency and eccentricity in the inverter and pump respectively.</p>
+<div id="5-2" style="position:absolute; left:150px; top:185px; width:20px; height:20px; background-color:green;"></div>
+<img id="5-1" style="position:absolute; left:70px; top:120px; width:200px;" src="images/inverter1.png"/>
+<div id="5-3" style="position:absolute; left:170px; top:145px; width:25px; height:25px; background-color:transparent; cursor:pointer;"></div>
+
+<img id="5-4a" style="position:absolute; left:167.5px; top:140px;  width:130px; visibility:hidden;" src="images/freq2.png" />
+<img id="5-4b" style="position:absolute; left:330px; top:200px; width:150px; visibility:hidden;" src="images/freq1.png" />
+<img id="5-4c" style="position:absolute; left:388.5px; top:266px; width:16.5px; visibility:hidden;" src="images/needle.png" />
+<img id="5-4d" style="position:absolute; left:387.5px; top:270px; width:20px; visibility:hidden;" src="images/needle.png" />
+
+<p id="p5-1" style="position:absolute; left:310px; top:150px;">Frequency you have chosen = <input id="t5-1"type="text" style="width:50px; " /> Hz <input type="button" id="b5-1"value="Submit" /></p>
+<p id="p5-2" style="position:absolute; left:310px; top:350px; visibility:hidden;"></p>
+<p id="p5-3" style="position:absolute; left:150px; top:90px; visibility:hidden;">Eccentricity you have chosen = <input id="t5-3"type="text" style="width:50px; visibility:hidden;" />&nbsp;<input type="button" id="b5-3" value="Submit" style="visibility:hidden;" /></p>
+<img id="5-5a" style="position:absolute; left:-35px; top:320px; visibility:hidden;" src="images/flume2.png"/>
+<div id="5-5b" style="position:absolute; left:-10px; top:325px; width:150px; height:100px; background-color:transparent; cursor:pointer; visibility:hidden;"></div>
+<img id="5-5c" style="position:absolute; left:199px; top:97.5px; width:225px; visibility:hidden;" src="images/wheel3.png" />
+
+<canvas id="canvas" width="500" height="500" style=""></canvas>
+<input id="ecc1" type="range" min="264" max="324" step="2" value="264" oninput="changeEcc()" style="position:absolute; left:500px; top:230px; pointer:cursor; width:116.5px; visibility:hidden;"/>
+<label id="l5-1" style="position:absolute; left:460px; top:150px; visibility:hidden; font-size:14px;">Eccentricity = <input id="ecc2" type="text"  style="width:50px; color:black; visibility:hidden;" disabled/></label>
+
+<script>
+	var can = document.querySelector("canvas");
+	var ctx = can.getContext("2d");
+	var e=266;
+	var eccVal=2;
+	var i=0;
+	function changeEcc()
+	{
+		myStopFunction();
+		if(e==266)
+		{
+			eccVal=2;
+		}
+		else if(e>266)
+		{
+			eccVal=((e-264))/2;
+		}
+		else if(e>324)
+		{
+			eccVal=30;
+		}
+		document.getElementById("ecc2").value=eccVal;
+		e=parseInt(document.getElementById("ecc1").value);
+		if(eccVal==Math.round(ecc))
+		{
+			document.getElementById("nextButton").style.visibility="visible";
+		}
+		else
+		{
+			document.getElementById("nextButton").style.visibility="hidden";
+		}
+		draw();
+	}
+	function draw()
+	{
+		ctx.clearRect(0,0,canvas.width,canvas.height);
+		ctx.beginPath();
+		ctx.lineCap="round";
+		ctx.lineWidth="4";
+		ctx.moveTo(307,172);
+		ctx.lineTo(e,182.5);
+		ctx.strokeStyle="black";
+		ctx.stroke();
+		ctx.closePath();
+
+		if(e==255)
+		{
+			i=e-72;
+		}
+		else if(e>255)
+		{
+			i=(e-72)+1;
+		}
+		ctx.beginPath();
+		ctx.lineWidth="2";
+		ctx.arc(306.5,i,7,0,2*Math.PI,false);
+		ctx.fillStyle="#fff";
+		ctx.fill();
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.lineCap="round";
+		ctx.lineWidth="2";
+		ctx.moveTo(100,220);
+		ctx.lineTo(308.5,i-4);
+		ctx.lineTo(308.5,i+4);
+	    ctx.lineTo(100,230);
+		ctx.fillStyle="#000";
+		ctx.fill();
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.lineWidth="2";
+		ctx.arc(307.5,i,3,0,2*Math.PI,false);
+		ctx.stroke();
+	}
+</script>
+</div>
+
+<div class="simsubscreen" id="canvas6" style="visibility:hidden;">
+<strong class="incanvas">STEP</strong>
+<span class="circlebg">&nbsp;6&nbsp;</span>
+<p class="steptext">&nbsp;Click on the start button the inverter to start the wave generation.</p>
+
+<p id="p6-1" style="position:absolute; left:245px; top:150px; font-size:14px;" >Magnified 2 times</p>
+
+<div id="6-5a" style="position:absolute; left:295px; top:215px; width:10px; height:20px; background-color:green;"></div>
+<img id="6-5b" style="position:absolute; left:250px; top:180px; width:120px;" title="11kW Inverter" src="images/inverter1.png"/>
+<div id="6-5c" style="position:absolute; left:295px; top:215px; width:10px; height:20px; background-color:transparent; cursor:pointer;"></div>
+
+<img id="" style="position:absolute; left:102.5px; top:290px; width:32.5px; opacity:0.60" src="images/pump1.png"/>
+<img id="6-6a" style="position:absolute; left:97.5px; top:310px; width:42.5px; " src="images/wheel.png"/>
+<div id="" style="position:absolute; left:51px; top:329px; width:400px; height:30px; background-color:#ffffff; opacity:0.75;"></div>
+
+<canvas id="mainCanvas" width="800" height="310"></canvas>
+
+<img id="6-6b" style="position:absolute; left:20px; top:321.5px; width:65px; height:62px;" src="images/flap2.png"/>
+
+<img id="6-1b" style="position:absolute; left:-40px; top:325px; width:790px;" src="images/tank2.png"/>
+<div id="6-2" style="position:absolute; left:-40px; top:370px; width:790px; height:40px; background:#7ecef4; opacity:0.95"></div>
+<img id="" style="position:absolute; left:-7.5px; top:275px;" src="images/flap1.png"/>
+<div id="waves1"></div>
+<!-- <div id="waves2"></div> -->
+<img id="6-3" style="position:absolute; left:20px; top:321.5px; width:65px; height:62px;" src="images/flap2.png"/>
+<div id="6-1c" style="position:absolute; left:55px; top:355px; width:20px; height:15px; background-color:#ffffff;"></div>
+<img id="6-31" style="position:absolute; left:75px; top:321.5px; height:63px;" src="images/flap21.png"/>
+<img id="6-4" style="position:absolute; left:20px; top:297.5px;" src="images/flap3.png"/>
+<img id="" style="position:absolute; left:-7.5px; top:281px;" src="images/flap1.png"/>
+<img id="" style="position:absolute; left:395px; top:330px; height:60px;" src="images/pile1.png"/>
+<img id="" style="position:absolute; left:402px; top:330px; height:60px;" src="images/pile1.png"/>
+<img id="6-1r" style="position:absolute; left:702.5px; top:337.5px; " src="images/wr.png"/>
+<img id="6-1a" style="position:absolute; left:-40px; top:325px; width:790px;" src="images/tank.png"/>
+<canvas id="subCanvas" width="200" height="100" style=" position:absolute; left:331px; top:330px;"></canvas>
+
+<p id="p6-1" ></p>
+<p id="p6-2" style="position:absolute; left:10px; top:435px;"></p>
+</div>
+
+<div class="simsubscreen" id="canvas7" style="visibility:hidden;">
+<div id="Spacing=0.75D,breadth=1D" style="visibility:hidden;">
+<input type="button" value="Spacing=0.75D, breadth=1D, water depth=0.4m, wave period=1.5s, wave height=8m" style=" position: absolute;left: 40px; top: 80px; width:70%; text-align:left; padding:5px; " onclick="dispVideo(value)"> </br></br>
+<input type="button" value="Spacing=0.75D, breadth=1D, water depth=0.4m, wave period=1.5s, wave height=12m" style=" position: absolute;left: 40px; top: 120px; width:70%; text-align:left; padding:5px; " onclick="dispVideo(value)"> </br></br>
+<input type="button" value="Spacing=0.75D, breadth=1D, water depth=0.4m, wave period=2s, wave height=12m" style=" position: absolute;left: 40px; top: 160px; width:70%; text-align:left; padding:5px; " onclick="dispVideo(value)"> </br></br>
+<input type="button" value="Spacing=0.75D, breadth=1D, water depth=0.5m, wave period=1.5s, wave height=12m" style=" position:absolute; left: 40px; top: 200px; width:70%; text-align:left; padding:5px; " onclick="dispVideo(value)"> </br></br>
+</div>
+
+<div id="Spacing=1D,breadth=1D" style="visibility:hidden;">
+<input type="button" value="Spacing=1D, breadth=1D, water depth=0.4m, wave period=1.5s, wave height=6m" style=" position: absolute;left: 40px; top: 80px; width:70%; text-align:left; padding:5px; " onclick="dispVideo(value)">
+<input type="button" value="Spacing=1D, breadth=1D, water depth=0.4m, wave period=1.5s, wave height=8m" style=" position: absolute;left: 40px; top: 120px; width:70%; text-align:left; padding:5px; " onclick="dispVideo(value)">
+<input type="button" value="Spacing=1D, breadth=1D, water depth=0.4m, wave period=1.5s, wave height=12m" style=" position: absolute;left: 40px; top: 160px; width:70%; text-align:left; padding:5px; " onclick="dispVideo(value)">
+<input type="button" value="Spacing=1D, breadth=1D, water depth=0.4m, wave period=2s, wave height=12m" style=" position: absolute;left: 40px; top: 200px; width:70%; text-align:left; padding:5px; " onclick="dispVideo(value)">
+<input type="button" value="Spacing=1D, breadth=1D, water depth=0.5m, wave period=1.5s, wave height=6m" style=" position: absolute;left: 40px; top: 240px; width:70%; text-align:left; padding:5px; " onclick="dispVideo(value)">
+<input type="button" value="Spacing=1D, breadth=1D, water depth=0.5m, wave period=1.5s, wave height=10m" style=" position: absolute;left: 40px; top: 280px; width:70%; text-align:left; padding:5px; " onclick="dispVideo(value)">
+<input type="button" value="Spacing=1D, breadth=1D, water depth=0.5m, wave period=1.5s, wave height=12m" style=" position: absolute;left: 40px; top: 280px; width:70%; text-align:left; padding:5px; " onclick="dispVideo(value)">
+</div>
+
+<div id="Spacing=1D,breadth=2D" style="visibility:hidden;">
+<input type="button" value="Spacing=1D, breadth=2D, water depth=0.4m, wave period=1.5s, wave height=12m" style=" position: absolute;left: 40px; top: 80px; width:70%; text-align:left; padding:5px; " onclick="dispVideo(value)">
+<input type="button" value="Spacing=1D, breadth=2D, water depth=0.4m, wave period=2s, wave height=12m" style=" position: absolute;left: 40px; top: 120px; width:70%; text-align:left; padding:5px; " onclick="dispVideo(value)">
+<input type="button" value="Spacing=1D, breadth=2D, water depth=0.5m, wave period=1.5s, wave height=6m" style=" position: absolute;left: 40px; top: 160px; width:70%; text-align:left; padding:5px; " onclick="dispVideo(value)">
+<input type="button" value="Spacing=1D, breadth=2D, water depth=0.5m, wave period=2s, wave height=10m" style=" position: absolute;left: 40px; top: 200px; width:70%; text-align:left; padding:5px; " onclick="dispVideo(value)">
+<input type="button" value="Spacing=1D, breadth=2D, water depth=0.5m, wave period=2s, wave height=12m" style=" position: absolute;left: 40px; top: 240px; width:70%; text-align:left; padding:5px; " onclick="dispVideo(value)">
+</div>
+<img id="prevButton" title="previous" onclick="prevTab()" style="position:absolute; visibility:hidden; top:470px; cursor:pointer;" src="images/prev.png" />
+</div>
+
+<div class="simsubscreen" id="canvas8" style="visibility:hidden;">
+<div id="graph1" style="position:absolute; left:10px; top:10px; width:650px; height:450px; visibility:hidden;"></div>
+</div>
+
+<video id="Spacing=0.75D, breadth=1D, water depth=0.4m, wave period=1.5s, wave height=8m" width="200" height="200" style="visibility:hidden; position:absolute; left: 25px; top: 60px;" controls>
+<source src="images/videos/0.75Dspacing1Dbreadth/spac=0.75D,breadth=1D,wd=0.4m,wp=1.5s,wh=8m.mp4" type="video/mp4" >
+</video>
+<video id="Spacing=0.75D, breadth=1D, water depth=0.4m, wave period=1.5s, wave height=12m" width="200" height="200" style="visibility:hidden; position:absolute; left: 25px; top: 60px;" controls>
+<source src="images/videos/0.75Dspacing1Dbreadth/spac=0.75D,breadth=1D,wd=0.4m,wp=1.5s,wh=12m.mp4" type="video/mp4" >
+</video>
+<video id="Spacing=0.75D, breadth=1D, water depth=0.4m, wave period=2s, wave height=12m" width="200" height="200" style="visibility:hidden; position:absolute; left: 25px; top: 60px; " controls>
+<source src="images/videos/0.75Dspacing1Dbreadth/spac=0.75D,breadth=1D,wd=0.4m,wp=2s,wh=12m.mp4" type="video/mp4" >
+</video>
+<video id="Spacing=0.75D, breadth=1D, water depth=0.5m, wave period=1.5s, wave height=12m" width="200" height="200" style="visibility:hidden; position:absolute; left: 25px; top: 60px; " controls>
+<source src="images/videos/0.75Dspacing1Dbreadth/spac=0.75D,breadth=1D,wd=0.5m,wp=1.5s,wh=12m.mp4" type="video/mp4" >
+</video>
+<video id="Spacing=0.75D, breadth=1D, water depth=0.5m, wave period=2s, wave height=12m" width="200" height="200" style="visibility:hidden; position:absolute; left: 25px; top: 60px; " controls>
+<source src="images/videos/0.75Dspacing1Dbreadth/spac=0.75D,breadth=1D,wd=0.5m,wp=2s,wh=12m.mp4" type="video/mp4" >
+</video>
+
+<video id="Spacing=1D, breadth=1D, water depth=0.4m, wave period=1.5s, wave height=6m" width="200" height="200" style="visibility:hidden; position:absolute; left: 25px; top: 60px;" controls>
+<source src="images/videos/1Dspacing1Dbreadth/spac=1D,breadth=1D,wd=0.4m,wp=1.5s,wh=6m.mp4" type="video/mp4" style="visibility:hidden">
+</video>
+<video id="Spacing=1D, breadth=1D, water depth=0.4m, wave period=1.5s, wave height=8m" width="200" height="200" style="visibility:hidden; position:absolute; left: 25px; top: 60px;" controls>
+<source src="images/videos/1Dspacing1Dbreadth/spac=1D,breadth=1D,wd=0.4m,wp=1.5s,wh=8m.mp4" type="video/mp4" style="visibility:hidden">
+</video>
+<video id="Spacing=1D, breadth=1D, water depth=0.4m, wave period=1.5s, wave height=12m" width="200" height="200" style="visibility:hidden; position:absolute; left: 25px; top: 60px;" controls>
+<source src="images/videos/1Dspacing1Dbreadth/spac=1D,breadth=1D,wd=0.4m,wp=1.5s,wh=12m.mp4" type="video/mp4" style="visibility:hidden">
+</video>
+<video id="Spacing=1D, breadth=1D, water depth=0.4m, wave period=2s, wave height=12m" width="200" height="200" style="visibility:hidden; position:absolute; left: 25px; top: 60px;" controls>
+<source src="images/videos/1Dspacing1Dbreadth/spac=1D,breadth=1D,wd=0.4m,wp=2s,wh=12m.mp4" type="video/mp4" style="visibility:hidden">
+</video>
+<video id="Spacing=1D, breadth=1D, water depth=0.5m, wave period=1.5s, wave height=6m" width="200" height="200" style="visibility:hidden; position:absolute; left: 25px; top: 60px;" controls>
+<source src="images/videos/1Dspacing1Dbreadth/spac=1D,breadth=1D,wd=0.5m,wp=1.5s,wh=6m.mp4" type="video/mp4" style="visibility:hidden">
+</video>
+<video id="Spacing=1D, breadth=1D, water depth=0.5m, wave period=1.5s, wave height=10m" width="200" height="200" style="visibility:hidden; position:absolute; left: 25px; top: 60px;" controls>
+<source src="images/videos/1Dspacing1Dbreadth/spac=1D,breadth=1D,wd=0.5m,wp=1.5s,wh=10m.mp4" type="video/mp4" style="visibility:hidden">
+</video>
+<video id="Spacing=1D, breadth=1D, water depth=0.5m, wave period=1.5s, wave height=12m" width="200" height="200" style="visibility:hidden; position:absolute; left: 25px; top: 60px;" controls>
+<source src="images/videos/1Dspacing1Dbreadth/spac=1D,breadth=1D,wd=0.5m,wp=1.5s,wh=12m.mp4" type="video/mp4" style="visibility:hidden">
+</video>
+<!--duplicate of spac=1D,breadth=1D,wd=0.5m,wp=1.5s,wh=6m for spac=1D,breadth=1D,wd=0.5m,wp=2s,wh=6m (no video available)-->
+<video id="Spacing=1D, breadth=1D, water depth=0.5m, wave period=2s, wave height=6m" width="200" height="200" style="visibility:hidden; position:absolute; left: 25px; top: 60px;" controls>
+<source src="images/videos/1Dspacing1Dbreadth/spac=1D,breadth=1D,wd=0.5m,wp=1.5s,wh=6m.mp4" type="video/mp4" style="visibility:hidden">
+</video>
+<!--duplicate of spac=1D,breadth=1D,wd=0.5m,wp=2s,wh=10m for spac=1D,breadth=1D,wd=0.5m,wp=2s,wh=10m (no video available)-->
+<video id="Spacing=1D, breadth=1D, water depth=0.5m, wave period=2s, wave height=10m" width="200" height="200" style="visibility:hidden; position:absolute; left: 25px; top: 60px;" controls>
+<source src="images/videos/1Dspacing1Dbreadth/spac=1D,breadth=1D,wd=0.5m,wp=1.5s,wh=10m.mp4" type="video/mp4" style="visibility:hidden">
+</video>
+
+<video id="Spacing=1D, breadth=2D, water depth=0.4m, wave period=1.5s, wave height=12m" width="200" height="200" style="visibility:hidden; position:absolute; left: 25px; top: 60px;" controls>
+<source src="images/videos/1Dspacing2Dbreadth/spac=1D,breadth=2D,wd=0.4m,wp=1.5s,wh=12m.mp4" type="video/mp4" style="visibility:hidden">
+</video>
+<video id="Spacing=1D, breadth=2D, water depth=0.4m, wave period=2s, wave height=12m" width="200" height="200" style="visibility:hidden; position:absolute; left: 25px; top: 60px;" controls>
+<source src="images/videos/1Dspacing2Dbreadth/spac=1D,breadth=2D,wd=0.4m,wp=2s,wh=12m.mp4" type="video/mp4" style="visibility:hidden">
+</video>
+<video id="Spacing=1D, breadth=2D, water depth=0.5m, wave period=1.5s, wave height=6m" width="200" height="200" style="visibility:hidden; position:absolute; left: 25px; top: 60px;" controls>
+<source src="images/videos/1Dspacing2Dbreadth/spac=1D,breadth=2D,wd=0.5m,wp=1.5s,wh=6m.mp4" type="video/mp4" style="visibility:hidden">
+</video>
+<video id="Spacing=1D, breadth=2D, water depth=0.5m, wave period=2s, wave height=10m" width="200" height="200" style="visibility:hidden; position:absolute; left: 25px; top: 60px;" controls>
+<source src="images/videos/1Dspacing2Dbreadth/spac=1D,breadth=2D,wd=0.5m,wp=2s,wh=10m.mp4" type="video/mp4" style="visibility:hidden">
+</video>
+<video id="Spacing=1D, breadth=2D, water depth=0.5m, wave period=2s, wave height=12m" width="200" height="200" style="visibility:hidden; position:absolute; left: 25px; top: 60px;" controls>
+<source src="images/videos/1Dspacing2Dbreadth/spac=1D,breadth=2D,wd=0.5m,wp=2s,wh=12m.mp4" type="video/mp4" style="visibility:hidden">
+</video>
+
+<div id="questDiv" style="position:absolute; background-color:grey; color:white; padding:7.5px; border-radius:5px; visibility:hidden; text-align:justify;">
+<p id="q"></p><select id="answer" >
+</select>
+<p id="a"></p>
+</div>
+
+<!-- nextButton -->
+<div id="nav">
+<img id="nextButton" onclick="navNext()" title="next" src="images/Next.png" />
+</div>
+
+<!--Blinking Arrow	-->
+<img class ="" id="arrow1" style="visibility:hidden;" src="images/arrow1.png"/>
+
+<div id="copyright"> &copy; 2018 - <script>document.write(new Date().getFullYear())</script> SOLVE - The Virtual Lab @ NITK Surathkal, Department of Water Resources & Ocean Engineering</div>
+</div>
+</body>
+</html>
