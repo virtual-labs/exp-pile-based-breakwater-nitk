@@ -1,0 +1,46 @@
+[{
+	"question": "The relationship between time period, wavelength and depth of water is given by",
+	"answers": {
+		"a": "L=gT<sup>2</sup>coth(kd)",
+		"b": "L=gT<sup>2</sup>tanh(kd)",
+		"c": "L=gT<sup>2</sup>cot(kd) ",
+		"d": "L=gT<sup>2</sup>tan(kd)"
+	},
+	"correctAnswer": "b"
+}, {
+	"question": "The density of seawater considered in the design of marine structures is ",
+	"answers": {
+		"a": "990-1000 kg/m<sup>3</sup>",
+		"b": "1010-1020 kg/m<sup>3</sup>",
+		"c": "1020-1030 kg/m<sup>3</sup>",
+		"d": "1030-1040 kg/m<sup>3</sup>"
+	},
+	"correctAnswer": "c"
+}, {
+	"question": "In REEF3D, as per relaxation beach method the typical wavelength of the dissipating relaxation zone should be",
+	"answers": {
+		"a": "d",
+		"b": "L",
+		"c": "2d",
+		"d": "2L"
+	},
+	"correctAnswer": "d"
+}, {
+	"question": "The mesh is described by ",
+	"answers": {
+		"a": "ctrl.txt",
+		"b": "control.txt",
+		"c": "reef3d",
+		"d": "DIVEMesh"
+	},
+	"correctAnswer": "b"
+}, {
+	"question": "In the REEF3D execution command “mpiexec -n 4 reef3d”, what does “4” signify?",
+	"answers": {
+		"a": "Number of processors",
+		"b": "Number of threads",
+		"c": "Number of data files",
+		"d": "Number of cores"
+	},
+	"correctAnswer": "a"
+}]
