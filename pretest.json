@@ -1,0 +1,40 @@
+[{
+	"question": "Increase in number of rows of pile results in ___________ of transmitted wave height. ",
+	"answers": {
+		"a": "Increase",
+		"b": "Decrease",
+		"c": "None of the above"
+	},
+	"correctAnswer": "b"
+}, {
+	"question": "The breaking criteria of waves in shallow water is (where H is wave height, d is the depth of water). ",
+	"answers": {
+		"a": "Hd &lt; 0.078 ",
+		"b": "Hd &lt; 0.087",
+		"c": "Hd &lt; 0.78 ",
+		"d": "Hd &lt; 0.87"
+	},
+	"correctAnswer": "c"
+}, {
+	"question": "In the equation (H<sub>i</sub>/gT<sup>2</sup>), H<sub>i</sub> is? ",
+	"answers": {
+		"a": "Final wave height",
+		"b": "Initial wave height",
+		"c": "None of the above"
+	},
+	"correctAnswer": "b"
+}, {
+	"question": "Wave length is the distance between two successive crest or trough.",
+	"answers": {
+		"a": "True",
+		"b": "False"
+	},
+	"correctAnswer": "a"
+}, {
+	"question": "Wave rider buoy and Pressure type wave gauge is used to measure wave height. ",
+	"answers": {
+		"a": "False",
+		"b": "True"
+	},
+	"correctAnswer": "b"
+}]
