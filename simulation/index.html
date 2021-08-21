@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<style>
+div.panel {
+    display: none;
+}
+
+div.panel.show {
+    display: block !important;
+}
+
+</style>
+</head>
+
+<body>
+<section class="content">
+          <h3 style="margin-top:5%">Simulation</h3>
+           
+            <!--Simulation content goes here -->
+			<!-- <iframe noscroll="" scrolling="no" src="images/slump test/index.html" height="606px" width="806px" style="background-color:white;"></iframe> -->
+<div class="accordion"><input type="button" value="Wave Attenuation in Single Row Pile Based Breakwater" style="width:74%; text-align:left; " /></div>
+<div class="panel" style="height:606px; width:806px;">
+<iframe noscroll="" scrolling="no" src="singlerow/index.html" class="panel" style="height:606px; width:804px; background-color:white;"></iframe>
+</div></br>
+<div class="accordion"><input type="button" value="Wave Attenuation in Two Rows Pile Based Breakwater" style="width:74%; text-align:left;" /></div>
+<div class="panel" style="height:606px; width:806px;">
+<iframe noscroll="" scrolling="no" src="tworows/index.html" class="panel" style="height:606px; width:804px; background-color:white;"></iframe>
+</div>
+
+
+<script>
+var acc = document.getElementsByClassName("accordion");
+var panel = document.getElementsByClassName('panel');
+
+for (var i = 0; i < acc.length; i++) {
+    acc[i].onclick = function() {
+    	var setClasses = !this.classList.contains('active');
+        setClass(acc, 'active', 'remove');
+        setClass(panel, 'show', 'remove');
+        
+       	if (setClasses) {
+            this.classList.toggle("active");
+            this.nextElementSibling.classList.toggle("show");
+        }
+    }
+}
+
+function setClass(els, className, fnName) {
+    for (var i = 0; i < els.length; i++) {
+        els[i].classList[fnName](className);
+    }
+}
+</script>
+<script src="../assets/js/iframeResize.js"></script></body>
